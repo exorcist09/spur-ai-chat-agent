@@ -1,4 +1,5 @@
 import { prisma } from "../config/prisma";
+import { llmService } from "./llm.service";
 
 class ChatService {
   async sendMessage(
@@ -7,6 +8,7 @@ class ChatService {
   ) {
     let conversationId = sessionId;
 
+    // Create conversation if it doesn't exist
     if (!conversationId) {
       const conversation =
         await prisma.conversation.create({
@@ -16,6 +18,7 @@ class ChatService {
       conversationId = conversation.id;
     }
 
+    // Save user message
     await prisma.message.create({
       data: {
         conversationId,
@@ -24,8 +27,32 @@ class ChatService {
       },
     });
 
-    const aiReply = `You said: ${message}`;
+    // Fetch conversation history
+    const history =
+      await prisma.message.findMany({
+        where: {
+          conversationId,
+        },
+        orderBy: {
+          createdAt: "asc",
+        },
+      });
 
+    let aiReply: string;
+
+    try {
+      aiReply =
+        await llmService.generateReply(
+          history,
+          message
+        );
+    } catch (error) {
+      console.error("LLM Error:", error);
+      aiReply =
+        "Sorry, I'm unable to respond right now. Please try again later.";
+    }
+
+    // Save AI message
     await prisma.message.create({
       data: {
         conversationId,
@@ -41,4 +68,5 @@ class ChatService {
   }
 }
 
-export const chatService = new ChatService();
+export const chatService =
+  new ChatService();
