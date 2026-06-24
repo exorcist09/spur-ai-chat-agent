@@ -1,6 +1,8 @@
 import express from "express";
 import cors from "cors";
 import chatRoutes from "./routes/chat.route"
+import { prisma } from "./config/prisma";
+
 
 const app = express();
 
@@ -13,5 +15,12 @@ app.get("/health",(req,res)=>{
 });
 
 app.use("/chat", chatRoutes)
+
+app.get("/db-test", async (_req, res) => {
+  const count =
+    await prisma.conversation.count();
+
+  res.json({ count });
+});
 
 export default app;
