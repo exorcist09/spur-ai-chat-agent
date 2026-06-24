@@ -1,6 +1,6 @@
 import { Plus, X } from 'lucide-react';
 import StoreInfoCard from '../shared/StoreInfoCard';
-import ConversationList from './ConversationList';
+import ConversationList from '../chat/ConversationList';
 import { useChatStore } from '../../store/chatStore';
 
 interface SidebarProps {
@@ -38,7 +38,7 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
       )}
 
       {/* Sidebar Content */}
-      <aside className={`fixed inset-y-0 left-0 z-50 w-72 bg-white border-r border-slate-200 transform transition-transform duration-300 ease-in-out lg:relative lg:transform-none flex flex-col ${isOpen ? 'translate-x-0' : '-translate-x-full'}`}>
+      <aside className={`fixed inset-y-0 left-0 z-50 w-72 bg-white border-r border-slate-200 transition-transform duration-300 ease-in-out lg:relative lg:translate-x-0 flex flex-col ${isOpen ? 'translate-x-0' : '-translate-x-full'}`}>
         
         {/* Header */}
         <div className="h-16 flex items-center justify-between px-4 border-b border-slate-100 shrink-0">
