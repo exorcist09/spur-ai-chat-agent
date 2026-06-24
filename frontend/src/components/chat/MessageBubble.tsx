@@ -1,4 +1,4 @@
-import { Bot } from 'lucide-react';
+import { BotMessageSquare  } from 'lucide-react';
 import { Message } from '../../types/chat';
 
 interface MessageBubbleProps {
@@ -14,7 +14,7 @@ export default function MessageBubble({ message }: MessageBubbleProps) {
         
         {isAi && (
           <div className="w-8 h-8 rounded-lg bg-blue-600 flex items-center justify-center shrink-0 shadow-sm mt-1">
-            <Bot className="w-5 h-5 text-white" />
+            <BotMessageSquare  className="w-5 h-5 text-white" />
           </div>
         )}
 
