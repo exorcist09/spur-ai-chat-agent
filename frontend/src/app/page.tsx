@@ -142,7 +142,11 @@ export default function Home() {
           <div className="bg-red-50 border border-red-200 rounded-xl p-3 flex items-center justify-between text-sm text-red-700 shadow-sm">
             <div className="flex items-center gap-2">
               <AlertCircle className="w-4 h-4 shrink-0" />
-              <span>Failed to send message. Please try again.</span>
+              <span>
+                {((sendMessageMutation.error as any)?.response?.data?.message) || 
+                 (sendMessageMutation.error?.message) || 
+                 "Failed to send message. Please try again."}
+              </span>
             </div>
             <button 
               onClick={() => sendMessageMutation.mutate(sendMessageMutation.variables as string)}
