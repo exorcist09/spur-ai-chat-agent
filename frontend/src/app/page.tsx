@@ -43,9 +43,9 @@ export default function Home() {
       // Handle HMR cache format change (previously returned { messages: ... }, now returns Message[])
       if (Array.isArray(historyData)) {
         setMessages(historyData);
-      } else if (historyData.messages) {
+      } else if (historyData && (historyData as any).messages) {
         setMessages(
-          historyData.messages.map((m: any) => ({
+          (historyData as any).messages.map((m: any) => ({
             id: m.id,
             role: m.sender,
             content: m.text,
@@ -80,7 +80,7 @@ export default function Home() {
         addConversation({
           id: data.sessionId,
           title: variables.length > 30 ? variables.substring(0, 30) + '...' : variables,
-          updatedAt: new Date().toISOString()
+          updatedAt: new Date()
         });
       }
       
