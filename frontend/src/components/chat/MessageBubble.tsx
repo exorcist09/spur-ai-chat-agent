@@ -22,7 +22,7 @@ export default function MessageBubble({ message }: MessageBubbleProps) {
           <div
             className={`px-4 py-3 rounded-2xl shadow-sm text-[15px] leading-relaxed ${
               isAi
-                ? 'bg-white border border-slate-100 text-slate-800 rounded-tl-sm'
+                ? 'bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700 text-slate-800 dark:text-slate-100 rounded-tl-sm'
                 : 'bg-blue-600 text-white rounded-tr-sm'
             }`}
           >

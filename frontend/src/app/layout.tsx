@@ -14,7 +14,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Spur-AI",
+  title: "Spur-AI Support",
   description: "Modern SaaS-style chat application",
   icons: {
     icon: "/spurlogo.jpg",

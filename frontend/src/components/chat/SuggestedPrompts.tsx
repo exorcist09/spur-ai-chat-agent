@@ -31,10 +31,10 @@ export default function SuggestedPrompts({ onSelect }: SuggestedPromptsProps) {
   return (
     <div className="flex flex-col items-center justify-center h-full max-w-4xl mx-auto px-4 w-full">
       <div className="mb-8 text-center space-y-4">
-        <div className="w-16 h-16 bg-blue-50 rounded-2xl flex items-center justify-center mx-auto shadow-inner">
+        <div className="w-16 h-16 bg-blue-50 dark:bg-blue-900/20 rounded-2xl flex items-center justify-center mx-auto shadow-inner">
           <img src="/spurlogo.jpg" alt="Spur-AI" className="w-10 h-10 rounded-lg" />
         </div>
-        <h2 className="text-2xl font-semibold text-slate-800">
+        <h2 className="text-2xl font-semibold text-slate-800 dark:text-slate-100">
           How can Spur-AI help you today?
         </h2>
       </div>
@@ -44,16 +44,16 @@ export default function SuggestedPrompts({ onSelect }: SuggestedPromptsProps) {
           <button
             key={idx}
             onClick={() => onSelect(sug.title)}
-            className="flex items-start gap-4 p-4 rounded-xl border border-slate-200 bg-white hover:border-blue-300 hover:shadow-md hover:bg-blue-50/30 transition-all text-left group"
+            className="flex items-start gap-4 p-4 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 hover:border-blue-300 dark:hover:border-blue-500/50 hover:shadow-md hover:bg-blue-50/30 dark:hover:bg-slate-800/50 transition-all text-left group"
           >
-            <div className="bg-slate-50 group-hover:bg-white p-2 rounded-lg transition-colors">
+            <div className="bg-slate-50 dark:bg-slate-800 group-hover:bg-white dark:group-hover:bg-slate-700 p-2 rounded-lg transition-colors">
               {sug.icon}
             </div>
             <div>
-              <div className="font-medium text-slate-800 mb-0.5 group-hover:text-blue-700 transition-colors">
+              <div className="font-medium text-slate-800 dark:text-slate-200 mb-0.5 group-hover:text-blue-700 dark:group-hover:text-blue-400 transition-colors">
                 {sug.title}
               </div>
-              <div className="text-sm text-slate-500">
+              <div className="text-sm text-slate-500 dark:text-slate-400">
                 {sug.description}
               </div>
             </div>
