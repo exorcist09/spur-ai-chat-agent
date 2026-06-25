@@ -12,11 +12,9 @@ export const conversationCache = {
     try {
       const data = await redisClient.get(`${PREFIX}${conversationId}`);
       if (data) {
-        console.log("Redis Cache Hit:", conversationId);
         // Upstash Redis automatically parses JSON if it was set as an object
         return data; 
       }
-      console.log("Redis Cache Miss:", conversationId);
       return null;
     } catch (error) {
       console.error("Redis Cache Get Error:", error);

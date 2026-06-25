@@ -1,6 +1,5 @@
 import type { Request, Response, NextFunction } from "express";
 import { chatService } from "../services/chat.service";
-import { prisma } from "../config/prisma";
 
 export const sendMessage = async (
   req: Request,

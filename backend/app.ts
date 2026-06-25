@@ -8,8 +8,13 @@ import { isRedisEnabled } from "./config/redis";
 
 const app = express();
 
+// Trust reverse proxies like Render so req.ip represents the real client IP
+app.set("trust proxy", 1);
+
 app.use(express.json());
-app.use(cors());
+app.use(cors({
+  origin: process.env.FRONTEND_URL || "*",
+}));
 
 
 app.get("/", (req, res) => {
@@ -24,14 +29,7 @@ app.get("/health", (req, res) => {
   });
 });
 
-app.use("/chat", chatRoutes)
-
-app.get("/db-test", async (_req, res) => {
-  const count =
-    await prisma.conversation.count();
-
-  res.json({ count });
-});
+app.use("/chat", chatRoutes);
 
 app.use(errorMiddleware);
 

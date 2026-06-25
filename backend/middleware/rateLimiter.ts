@@ -6,6 +6,16 @@ const memoryStore = new Map<string, { count: number; resetAt: number }>();
 const LIMIT = 30;
 const WINDOW_IN_SECONDS = 900; // 15 mins
 
+// Periodic cleanup of expired rate limit entries to prevent memory leaks
+setInterval(() => {
+  const now = Date.now();
+  for (const [key, record] of memoryStore.entries()) {
+    if (now > record.resetAt) {
+      memoryStore.delete(key);
+    }
+  }
+}, WINDOW_IN_SECONDS * 1000).unref(); // unref so it doesn't block node exit
+
 export const rateLimiter = async (req: Request, res: Response, next: NextFunction) => {
   // Use IP as identifier. In production behind a proxy, you'd use req.ip or x-forwarded-for.
   const ip = req.ip || req.socket.remoteAddress || "unknown_ip";

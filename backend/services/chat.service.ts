@@ -44,6 +44,9 @@ class ChatService {
       conversationId = conversation.id;
     }
 
+    // Fetch conversation history using internal method (hits cache or DB) BEFORE saving new message
+    const history = await this.getHistory(conversationId);
+
     // Save user message
     await prisma.message.create({
       data: {
@@ -52,9 +55,6 @@ class ChatService {
         text: message,
       },
     });
-
-    // Fetch conversation history using internal method (hits cache or DB)
-    const history = await this.getHistory(conversationId);
 
     let aiReply: string;
 
