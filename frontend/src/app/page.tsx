@@ -11,7 +11,7 @@ import { chatService } from '../services/chat.service';
 import { Message } from '../types/chat';
 
 export default function Home() {
-  const { messages, setMessages, addMessage, isLoading, setIsLoading, sessionId, setSessionId } = useChatStore();
+  const { messages, setMessages, addMessage, isLoading, setIsLoading, sessionId, setSessionId, addConversation } = useChatStore();
   const [hasHydrated, setHasHydrated] = useState(false);
 
   // Wait for hydration to avoid mismatch on server vs client
@@ -20,27 +20,42 @@ export default function Home() {
   }, []);
 
   // Fetch History Query
-  const { isFetching: isHistoryLoading, refetch: refetchHistory } = useQuery({
+  const { data: historyData, isFetching: isHistoryLoading } = useQuery({
     queryKey: ['chatHistory', sessionId],
     queryFn: async () => {
       if (!sessionId) return null;
-      setIsLoading(true);
-      try {
-        const data = await chatService.getHistory(sessionId);
-        const historyMessages: Message[] = data.messages.map(m => ({
-          id: m.id,
-          role: m.sender,
-          content: m.text,
-          timestamp: new Date(m.createdAt)
-        }));
-        setMessages(historyMessages);
-        return data;
-      } finally {
-        setIsLoading(false);
-      }
+      const data = await chatService.getHistory(sessionId);
+      const historyMessages: Message[] = data.messages.map(m => ({
+        id: m.id,
+        role: m.sender,
+        content: m.text,
+        timestamp: new Date(m.createdAt)
+      }));
+      return historyMessages;
     },
     enabled: !!sessionId && hasHydrated,
   });
+
+  // Sync query data to store when switching sessions
+  useEffect(() => {
+    if (historyData) {
+      // Handle HMR cache format change (previously returned { messages: ... }, now returns Message[])
+      if (Array.isArray(historyData)) {
+        setMessages(historyData);
+      } else if (historyData.messages) {
+        setMessages(
+          historyData.messages.map((m: any) => ({
+            id: m.id,
+            role: m.sender,
+            content: m.text,
+            timestamp: new Date(m.createdAt)
+          }))
+        );
+      }
+    } else if (!sessionId) {
+      setMessages([]);
+    }
+  }, [historyData, sessionId, setMessages]);
 
   // Send Message Mutation
   const sendMessageMutation = useMutation({
@@ -57,10 +72,15 @@ export default function Home() {
       addMessage(userMessage);
       return { messageText };
     },
-    onSuccess: (data) => {
+    onSuccess: (data, variables) => {
       // If we got a new sessionId, store it
       if (data.sessionId && !sessionId) {
         setSessionId(data.sessionId);
+        addConversation({
+          id: data.sessionId,
+          title: variables.length > 30 ? variables.substring(0, 30) + '...' : variables,
+          updatedAt: new Date().toISOString()
+        });
       }
       
       // Append AI response
@@ -95,7 +115,8 @@ export default function Home() {
     <ChatLayout>
       <MessageList 
         messages={messages} 
-        isLoading={isLoading || isHistoryLoading} 
+        isLoading={isLoading} 
+        isHistoryLoading={isHistoryLoading}
         onSelectPrompt={handleSelectPrompt} 
       />
       

@@ -3,14 +3,16 @@ import { Message } from '../../types/chat';
 import MessageBubble from './MessageBubble';
 import TypingIndicator from './TypingIndicator';
 import SuggestedPrompts from './SuggestedPrompts';
+import MessageSkeleton from './MessageSkeleton';
 
 interface MessageListProps {
   messages: Message[];
   isLoading: boolean;
+  isHistoryLoading?: boolean;
   onSelectPrompt: (prompt: string) => void;
 }
 
-export default function MessageList({ messages, isLoading, onSelectPrompt }: MessageListProps) {
+export default function MessageList({ messages, isLoading, isHistoryLoading, onSelectPrompt }: MessageListProps) {
   const scrollRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -18,6 +20,16 @@ export default function MessageList({ messages, isLoading, onSelectPrompt }: Mes
       scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
     }
   }, [messages, isLoading]);
+
+  if (isHistoryLoading) {
+    return (
+      <div className="flex-1 overflow-y-auto p-4 sm:p-6 bg-slate-50/50">
+        <div className="max-w-4xl mx-auto w-full">
+          <MessageSkeleton />
+        </div>
+      </div>
+    );
+  }
 
   if (messages.length === 0 && !isLoading) {
     return (

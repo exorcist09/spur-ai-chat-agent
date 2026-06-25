@@ -64,11 +64,6 @@ export default function ChatInput({ onSend, disabled }: ChatInputProps) {
             <Send className="w-5 h-5" />
           </button>
         </form>
-        <div className="text-center mt-2">
-          <span className="text-[11px] text-slate-400">
-            Spur-AI may produce inaccurate information about people, places, or facts.
-          </span>
-        </div>
       </div>
     </div>
   );

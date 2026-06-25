@@ -9,7 +9,7 @@ interface SidebarProps {
 }
 
 export default function Sidebar({ isOpen, onClose }: SidebarProps) {
-  const { conversations, sessionId, setSessionId, clearMessages } = useChatStore();
+  const { conversations, sessionId, setSessionId, clearMessages, deleteConversation } = useChatStore();
 
   const handleNewConversation = () => {
     setSessionId(null);
@@ -67,6 +67,7 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
               conversations={conversations} 
               activeId={sessionId} 
               onSelect={handleSelectConversation} 
+              onDelete={deleteConversation}
             />
           </div>
         </div>

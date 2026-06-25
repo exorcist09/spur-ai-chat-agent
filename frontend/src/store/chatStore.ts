@@ -15,6 +15,8 @@ interface ChatState {
   setIsLoading: (isLoading: boolean) => void;
   setError: (error: string | null) => void;
   clearMessages: () => void;
+  addConversation: (conversation: Conversation) => void;
+  deleteConversation: (id: string) => void;
 }
 
 export const useChatStore = create<ChatState>()(
@@ -32,6 +34,12 @@ export const useChatStore = create<ChatState>()(
       setIsLoading: (isLoading) => set({ isLoading }),
       setError: (error) => set({ error }),
       clearMessages: () => set({ messages: [], error: null, sessionId: null }),
+      addConversation: (conversation) => set((state) => ({ conversations: [conversation, ...state.conversations] })),
+      deleteConversation: (id) => set((state) => ({
+        conversations: state.conversations.filter(c => c.id !== id),
+        sessionId: state.sessionId === id ? null : state.sessionId,
+        messages: state.sessionId === id ? [] : state.messages
+      })),
     }),
     {
       name: 'chat-storage',
