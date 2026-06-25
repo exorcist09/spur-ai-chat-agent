@@ -32,15 +32,7 @@ export const getHistory = async (
   try {
     const sessionId = req.params.sessionId as string;
 
-    const messages =
-      await prisma.message.findMany({
-        where: {
-          conversationId: sessionId,
-        },
-        orderBy: {
-          createdAt: "asc",
-        },
-      });
+    const messages = await chatService.getHistory(sessionId);
 
     res.status(200).json({
       messages,
