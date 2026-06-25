@@ -18,7 +18,7 @@ app.use(cors({
 
 
 app.get("/", (req, res) => {
-  res.status(200).send("Spur Ai Chat support Agent");
+  res.status(200).send("ShopAssist Ai Chat support Agent");
 });
 
 app.get("/health", (req, res) => {

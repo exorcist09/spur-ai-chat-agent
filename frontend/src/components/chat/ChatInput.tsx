@@ -48,7 +48,7 @@ export default function ChatInput({ onSend, disabled }: ChatInputProps) {
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={handleKeyDown}
             disabled={disabled}
-            placeholder="Message Spur-AI..."
+            placeholder="Message ShopAssist Ai..."
             className="w-full max-h-[200px] bg-transparent resize-none outline-none text-slate-800 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 p-2 overflow-y-auto"
             rows={1}
           />
