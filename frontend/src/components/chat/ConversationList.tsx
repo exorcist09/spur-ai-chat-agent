@@ -25,14 +25,14 @@ export default function ConversationList({ conversations, activeId, onSelect, on
             onClick={() => onSelect(conv.id)}
             className={`flex items-center gap-3 w-full text-left p-3 rounded-lg transition-colors ${
               activeId === conv.id
-                ? 'bg-blue-50 text-blue-700 font-medium'
-                : 'text-slate-700 hover:bg-slate-100'
+                ? 'bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-400 font-medium'
+                : 'text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800/50'
             }`}
           >
-            <MessageSquare className={`w-5 h-5 shrink-0 ${activeId === conv.id ? 'text-blue-600' : 'text-slate-400 group-hover:text-blue-600'}`} />
+            <MessageSquare className={`w-5 h-5 shrink-0 ${activeId === conv.id ? 'text-blue-600 dark:text-blue-500' : 'text-slate-400 dark:text-slate-500 group-hover:text-blue-600 dark:group-hover:text-blue-400'}`} />
             <div className="flex-1 min-w-0 pr-6">
               <div className="truncate">{conv.title}</div>
-              <div className={`text-xs ${activeId === conv.id ? 'text-blue-500' : 'text-slate-400'}`}>
+              <div className={`text-xs ${activeId === conv.id ? 'text-blue-500 dark:text-blue-400' : 'text-slate-400 dark:text-slate-500'}`}>
                 {new Date(conv.updatedAt).toLocaleDateString()}
               </div>
             </div>
@@ -42,7 +42,7 @@ export default function ConversationList({ conversations, activeId, onSelect, on
               e.stopPropagation();
               onDelete(conv.id);
             }}
-            className="absolute right-2 top-1/2 -translate-y-1/2 p-1.5 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded-md opacity-0 group-hover:opacity-100 transition-all"
+            className="absolute right-2 top-1/2 -translate-y-1/2 p-1.5 text-slate-400 dark:text-slate-500 hover:text-red-600 dark:hover:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-md opacity-0 group-hover:opacity-100 transition-all"
             title="Delete conversation"
           >
             <Trash2 className="w-4 h-4" />

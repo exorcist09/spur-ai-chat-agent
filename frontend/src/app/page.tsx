@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { AlertCircle, RefreshCw } from 'lucide-react';
 import ChatLayout from '../components/layout/ChatLayout';
+import SidebarSkeleton from '../components/layout/SidebarSkeleton';
 import MessageList from '../components/chat/MessageList';
 import ChatInput from '../components/chat/ChatInput';
 import { useChatStore } from '../store/chatStore';
@@ -108,7 +109,22 @@ export default function Home() {
 
   // Prevent rendering until Zustand hydration to avoid hydration mismatch
   if (!hasHydrated) {
-    return null; 
+    return (
+      <div className="flex h-screen w-full bg-white dark:bg-slate-950 overflow-hidden font-sans">
+        <SidebarSkeleton />
+        <div className="flex-1 flex flex-col min-w-0 bg-white dark:bg-slate-950 ml-0 lg:ml-72">
+           <header className="h-16 flex items-center px-4 sm:px-6 border-b border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shrink-0 shadow-sm z-10 transition-colors">
+             <div className="w-6 h-6 rounded bg-slate-200 dark:bg-slate-800 animate-pulse lg:hidden mr-4"></div>
+             <div className="h-6 w-32 bg-slate-200 dark:bg-slate-800 rounded animate-pulse"></div>
+           </header>
+           <div className="flex-1 overflow-y-auto p-4 sm:p-6 bg-slate-50/50 dark:bg-slate-950">
+             <div className="max-w-4xl mx-auto w-full">
+               <div className="w-full h-96 bg-slate-200 dark:bg-slate-900 animate-pulse rounded-2xl" />
+             </div>
+           </div>
+        </div>
+      </div>
+    );
   }
 
   return (

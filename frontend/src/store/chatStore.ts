@@ -3,6 +3,7 @@ import { persist } from 'zustand/middleware';
 import { Message, Conversation } from '../types/chat';
 
 interface ChatState {
+  theme: 'light' | 'dark';
   sessionId: string | null;
   messages: Message[];
   conversations: Conversation[];
@@ -17,11 +18,13 @@ interface ChatState {
   clearMessages: () => void;
   addConversation: (conversation: Conversation) => void;
   deleteConversation: (id: string) => void;
+  toggleTheme: () => void;
 }
 
 export const useChatStore = create<ChatState>()(
   persist(
     (set) => ({
+      theme: 'light',
       sessionId: null,
       messages: [],
       conversations: [],
@@ -40,11 +43,13 @@ export const useChatStore = create<ChatState>()(
         sessionId: state.sessionId === id ? null : state.sessionId,
         messages: state.sessionId === id ? [] : state.messages
       })),
+      toggleTheme: () => set((state) => ({ theme: state.theme === 'light' ? 'dark' : 'light' })),
     }),
     {
       name: 'chat-storage',
-      // Only persist sessionId and conversations to local storage
+      // Only persist sessionId, conversations, and theme to local storage
       partialize: (state) => ({ 
+        theme: state.theme,
         sessionId: state.sessionId,
         conversations: state.conversations,
       }),
