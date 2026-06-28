@@ -1,27 +1,18 @@
-# ShopAssist Ai
+# ShopAssist Ai 
 
 An AI-powered customer support chat application built for the **Spur Founding Full Stack Engineer** assignment. 
 
-ShopAssist Ai simulates a real customer support platform, equipped with context-aware AI conversations, session management, robust PostgreSQL persistence, and distributed Redis caching and rate limiting.
-
-<div align="center">
-
-![Next.js](https://img.shields.io/badge/Next.js-15-black?style=for-the-badge&logo=next.js)
-![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)
-![Express](https://img.shields.io/badge/Express-000000?style=for-the-badge&logo=express&logoColor=white)
-![Redis](https://img.shields.io/badge/Upstash_Redis-DC382D?style=for-the-badge&logo=redis&logoColor=white)
-![PostgreSQL](https://img.shields.io/badge/PostgreSQL-336791?style=for-the-badge&logo=postgresql&logoColor=white)
-![Gemini](https://img.shields.io/badge/Gemini_2.5-4285F4?style=for-the-badge&logo=google&logoColor=white)
-
-</div>
-
-<!-- Insert Hero Image Here -->
-> *![ShopAssist Ai Hero Preview](./assets/hero-preview.png)*
+ShopAssist Ai is an AI-powered customer support platform, equipped with context-aware AI conversations, session management, robust PostgreSQL persistence, and distributed Redis caching and rate limiting.
 
 ## Live Demo
-* **Frontend:** [https://spur-ai-chat-agent-rl09.onrender.com](https://spur-ai-chat-agent-rl09.onrender.com) *(Update with real frontend URL if different)*
-* **Backend API:** [https://spur-ai-chat-agent-rl09.onrender.com](https://spur-ai-chat-agent-rl09.onrender.com)
-* **Health Endpoint:** [https://spur-ai-chat-agent-rl09.onrender.com/health](https://spur-ai-chat-agent-rl09.onrender.com/health)
+
+| Service | URL |
+| :--- | :--- |
+| **Frontend** | [https://spur-ai-chat-agent-rl09.onrender.com](https://spur-ai-chat-agent-rl09.onrender.com) |
+| **Backend API** | [https://spur-ai-chat-agent-rl09.onrender.com](https://spur-ai-chat-agent-rl09.onrender.com) |
+| **Health Endpoint** | [https://spur-ai-chat-agent-rl09.onrender.com/health](https://spur-ai-chat-agent-rl09.onrender.com/health) |
+
+--- 
 
 > **Note:** The backend is deployed on Render's free tier. If the API hasn't been used in a while, it may take 30–50 seconds to spin up on the first request (cold start).
 
@@ -33,11 +24,11 @@ ShopAssist Ai simulates a real customer support platform, equipped with context-
 - **Conversation Persistence:** All chats are durably saved to a Supabase PostgreSQL database via Prisma.
 - **Session Restoration:** Users can seamlessly return to past conversations and pick up exactly where they left off.
 - **Context-Aware Responses:** The LLM is fed previous chat history to provide highly accurate, contextual answers.
-- **Redis Conversation Cache:** Drastically reduces database reads by caching heavily accessed chat histories.
+- **Redis Conversation Cache:** Reduces repeated PostgreSQL queries by caching conversation history.
 - **Distributed Rate Limiting:** Protects the AI endpoint from abuse (30 requests per 15 minutes) using Redis, with an automatic in-memory fallback.
-- **Responsive UI:** A stunning, mobile-friendly interface with Dark Mode support built with Tailwind CSS v4.
+- **Responsive UI:** A mobile-friendly interface with Dark Mode support built with Tailwind CSS v4.
 - **Graceful Error Handling:** System gracefully degrades to PostgreSQL if Redis fails, and surfaces clean JSON errors to the frontend.
-- **Production-Ready Architecture:** Clean separation of concerns, Zod input validation, and secure CORS configurations.
+- **Modular Backend Architecture:** Clean separation of concerns, Zod input validation, and secure CORS configurations.
 
 ---
 
@@ -45,7 +36,7 @@ ShopAssist Ai simulates a real customer support platform, equipped with context-
 
 | Layer | Technologies |
 | --- | --- |
-| **Frontend** | Next.js 16 (App Router), TypeScript, TailwindCSS v4, Zustand, TanStack React Query, Axios, Lucide React |
+| **Frontend** | Next.js, TypeScript, TailwindCSS, Zustand, TanStack React Query, Axios, Lucide React |
 | **Backend** | Node.js, Express, TypeScript, Prisma ORM, Zod Validation |
 | **Database** | PostgreSQL (Supabase) |
 | **Caching & Rate Limiting** | Upstash Redis |
@@ -57,43 +48,39 @@ ShopAssist Ai simulates a real customer support platform, equipped with context-
 ## Screenshots
 
 ### Desktop View
-![Desktop UI Preview](./assets/desktop-preview.png)
-*The clean, expansive desktop layout featuring a persistent sidebar and immediate chat interaction.*
+
+| Home Screen | Conversation |
+| :---: | :---: |
+| <img src="./images/desktop-home.png" alt="Home Screen" width="350" /> | <img src="./images/desktop-chat.png" alt="New Conversation" width="350" /> |
 
 ### Mobile View
-![Mobile UI Preview](./assets/mobile-preview.png)
-*A highly responsive mobile layout with a slide-out drawer for seamless navigation.*
 
-### Chat Interface
-![Chat Interface Preview](./assets/chat-preview.png)
-*Real-time conversational UI with markdown support and intelligent AI responses.*
+| Conversation  | Sidebar Layout   |
+| :---: | :---: |
+| <img src="./images/mobile-chat.png" alt="Conversation History" width="200" /> | <img src="./images/mobile-home-sidebar.png" alt="Mobile Layout" width="200" /> |
 
-### Session History
-![Session History Preview](./assets/history-preview.png)
-*Easily switch between previous conversation sessions, instantly loaded from the Redis cache.*
+
 
 ---
 
 ## Project Structure
 
-This is a monorepo containing both the frontend client and the backend API.
-
 ```text
-spur/
-├── frontend/             # Next.js React application
-│   ├── src/app/          # App Router pages and global layouts
-│   ├── src/components/   # Reusable UI components (Chat, Sidebar, etc.)
-│   ├── src/store/        # Zustand global state management
-│   └── src/services/     # API clients (Axios/TanStack Query)
+.
+├── backend/              # Express Node.js Application
+│   ├── cache/            # Redis cache service wrappers
+│   ├── config/           # Initialization for Prisma and Redis clients
+│   ├── controller/       # HTTP route handlers
+│   ├── middleware/       # Rate limiting, Zod validation, Error handling
+│   ├── prisma/           # Database schema and migrations
+│   ├── routes/           # Express router definitions
+│   └── services/         # Core business logic of Chat, LLM integrations
 │
-└── backend/              # Express Node.js API
-    ├── prisma/           # Database schema and migrations
-    ├── cache/            # Redis cache service wrappers
-    ├── config/           # Initialization for Prisma and Redis clients
-    ├── controller/       # Thin HTTP route handlers
-    ├── middleware/       # Rate limiting, Zod validation, Error handling
-    ├── routes/           # Express router definitions
-    └── services/         # Core business logic (Chat, LLM integrations)
+└── frontend/             # Next.js React application
+    ├── src/app/          # App Router pages and global layouts
+    ├── src/components/   # Reusable UI components (Chat, Sidebar, etc.)
+    ├── src/services/     # API clients (Axios/TanStack Query)
+    └── src/store/        # Zustand global state management
 ```
 
 ---
@@ -225,7 +212,7 @@ Fetches the complete message history for a given conversation.
 
 * **Input Validation:** Zod enforces strict schemas on all incoming HTTP requests to prevent malformed data.
 * **Rate Limiting:** Protects the expensive Gemini LLM endpoints from malicious loops.
-* **CORS:** API is strictly configured to only accept requests from the designated `FRONTEND_URL`.
+* **CORS:** API is configured to accept requests from the designated `FRONTEND_URL` (or allows all origins as a fallback during local development if omitted).
 * **Centralized Errors:** A global error middleware catches all uncaught exceptions, ensuring the backend never crashes and always returns a sanitized JSON response.
 * **No Secrets Committed:** All API keys are loaded strictly via `.env`.
 
@@ -233,9 +220,11 @@ Fetches the complete message history for a given conversation.
 
 ## Local Development
 
+> **Note:** Ensure you have Bun installed (e.g., v1.1 or higher).
+
 ### 1. Clone & Install
 ```bash
-git clone <repo-url>
+git clone https://github.com/exorcist09/spur-ai-chat-agent.git
 cd spur-ai-chat-agent
 
 # Install backend dependencies
@@ -243,7 +232,7 @@ cd backend
 bun install
 
 # Install frontend dependencies
-cd ../frontend
+cd frontend
 bun install
 ```
 
@@ -254,13 +243,12 @@ bun install
 | --- | --- |
 | `PORT` | The port the Express server will run on (e.g., 8000) |
 | `DATABASE_URL` | Your Supabase PostgreSQL connection string |
-| `DIRECT_URL` | The direct connection string for Prisma migrations |
 | `GEMINI_API_KEY` | Your Google Gemini API Key |
-| `REDIS_URL` | *(Optional)* Upstash Redis URL |
-| `REDIS_TOKEN` | *(Optional)* Upstash Redis Token |
+| `REDIS_URL` | *(Optional)* Upstash Redis URL (if omitted, Redis is skipped and falls back to PostgreSQL) |
+| `REDIS_TOKEN` | *(Optional)* Upstash Redis Token (if omitted, Redis is skipped and falls back to PostgreSQL) |
 | `FRONTEND_URL` | Allowed CORS origin (e.g., `http://localhost:3000`) |
 
-**Frontend (`frontend/.env.local`):**
+**Frontend (`frontend/.env`):**
 | Variable | Description |
 | --- | --- |
 | `NEXT_PUBLIC_API_URL` | URL to your backend (e.g., `http://localhost:8000`) |
@@ -273,7 +261,7 @@ bunx prisma migrate dev
 ```
 
 ### 4. Run the Stack
-Start both servers in separate terminal windows:
+Start both servers in separate terminal windows in local:
 ```bash
 # Terminal 1 (Backend)
 cd backend
@@ -289,36 +277,31 @@ bun run dev
 ## Design Decisions
 
 * **Next.js (App Router):** Chosen for optimal React server-side rendering, routing capabilities, and overall ecosystem maturity.
-* **Prisma + PostgreSQL:** Prisma provides unbeatable Type-Safety and developer experience when mutating SQL databases.
-* **Upstash Redis:** Serverless, HTTP-based Redis that perfectly fits the cloud-native, low-maintenance deployment model of this project.
-* **Gemini 2.5 Flash:** Offers an incredible balance of speed and reasoning capabilities, perfect for low-latency chat environments.
+* **Prisma + PostgreSQL:** Prisma provides strong Type-Safety and a structured developer experience when mutating SQL databases.
+* **Upstash Redis:** Serverless, HTTP-based Redis that fits the cloud-native, low-maintenance deployment model of this project.
+* **Gemini 2.5 Flash:** Offers an optimal balance of speed and reasoning capabilities, suitable for low-latency chat environments.
 * **Zustand + TanStack Query:** Zustand handles lightweight global UI state (like Dark Mode and Sidebar toggles), while TanStack Query manages complex asynchronous server state and caching for the chat interface.
 
 ---
 
-## Trade-offs
+## If I had more time
 
 To remain focused on the core assignment constraints, the following conscious trade-offs were made:
-* **Authentication Omitted:** The application relies on local storage session tracking rather than full JWT/OAuth auth, as it wasn't strictly required.
+* **Authentication:** The application relies on local storage session tracking rather than full JWT/OAuth auth, as it wasn't strictly required.
 * **No Streaming Responses:** AI responses are currently buffered and sent as a single payload. Implementing SSE (Server-Sent Events) for streaming would improve UX but increase backend complexity.
 * **Single Tenant:** The system is designed for a single store's knowledge base.
+* **Response Streaming:** Using Server-Sent Events to stream chunks of text back to the UI for a GPT-like feel.
+* **Multi-LLM Support:** Implement an abstract Factory pattern to allow dynamically swapping between Gemini, Claude, and OpenAI via environment variables.
+* **Deployment:** Use of Docker to containerize the application for easier and more reliable deployment.
+* **Automated Testing:** Add comprehensive unit, integration, and end-to-end tests (using Vitest/Jest and Playwright) to improve reliability and catch regressions.
 
----
-
-## Future Improvements
-
-If given an additional week, I would implement:
-1. **Response Streaming:** Using Server-Sent Events to stream chunks of text back to the UI for a ChatGPT-like feel.
-2. **Multi-LLM Support:** Implement an abstract Factory pattern to allow dynamically swapping between Gemini, Claude, and OpenAI via environment variables.
-3. **Authentication:** Add NextAuth for persistent user accounts across devices.
-4. **Admin Dashboard:** A separate route to view chat logs, adjust the AI's system prompt, and monitor rate limiting metrics.
 
 ---
 
 ## Assignment Checklist
 
 - [x] Chat UI matching modern standards
-- [x] LLM Integration (Gemini)
+- [x] LLM Integration (Gemini (selected for its speed and straightforward integration))
 - [x] Context-aware conversation history
 - [x] Conversation persistence (PostgreSQL)
 - [x] Session restoration (Sidebar history)
@@ -328,12 +311,12 @@ If given an additional week, I would implement:
 - [x] **Bonus:** Distributed Redis Caching
 - [x] **Bonus:** Distributed Rate Limiting
 - [x] **Bonus:** Graceful Database Degradation
+- [x] **Bonus:** Dark Mode Support
 
 ---
 
 ## Author
 
-**Adarsh Verma**
-* GitHub: [github.com/exorcist09](https://github.com/exorcist09)
-* LinkedIn: [linkedin.com/in/adarsh-verma](#) *(Update Link)*
-* Portfolio: [your-portfolio.com](#) *(Update Link)*
+**Adarsh Verma**  
+Portfolio: [https://adarshverma.xyz](https://adarshverma.xyz)  
+Email: [vermaadarsh1024@gmail.com](mailto:vermaadarsh1024@gmail.com)
