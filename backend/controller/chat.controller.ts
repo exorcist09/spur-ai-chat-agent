@@ -1,6 +1,5 @@
 import type { Request, Response, NextFunction } from "express";
 import { chatService } from "../services/chat.service";
-import { prisma } from "../config/prisma";
 
 export const sendMessage = async (
   req: Request,
@@ -32,15 +31,7 @@ export const getHistory = async (
   try {
     const sessionId = req.params.sessionId as string;
 
-    const messages =
-      await prisma.message.findMany({
-        where: {
-          conversationId: sessionId,
-        },
-        orderBy: {
-          createdAt: "asc",
-        },
-      });
+    const messages = await chatService.getHistory(sessionId);
 
     res.status(200).json({
       messages,

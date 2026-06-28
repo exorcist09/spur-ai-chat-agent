@@ -14,11 +14,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Spur-AI Support",
+  title: "ShopAssist Ai Support",
   description: "Modern SaaS-style chat application",
-  icons: {
-    icon: "/spurlogo.jpg",
-  },
 };
 
 export default function RootLayout({

@@ -1,7 +1,33 @@
 import { prisma } from "../config/prisma";
 import { llmService } from "./llm.service";
+import { conversationCache } from "../cache/conversation.cache";
 
 class ChatService {
+  async getHistory(sessionId: string) {
+    // 1. Try Cache
+    const cachedHistory = await conversationCache.getCachedHistory(sessionId);
+    if (cachedHistory) {
+      return cachedHistory;
+    }
+
+    // 2. Try DB Fallback
+    const history = await prisma.message.findMany({
+      where: {
+        conversationId: sessionId,
+      },
+      orderBy: {
+        createdAt: "asc",
+      },
+    });
+
+    // 3. Populate Cache
+    if (history.length > 0) {
+      await conversationCache.setCachedHistory(sessionId, history);
+    }
+
+    return history;
+  }
+
   async sendMessage(
     message: string,
     sessionId?: string
@@ -18,6 +44,9 @@ class ChatService {
       conversationId = conversation.id;
     }
 
+    // Fetch conversation history using internal method (hits cache or DB) BEFORE saving new message
+    const history = await this.getHistory(conversationId);
+
     // Save user message
     await prisma.message.create({
       data: {
@@ -26,17 +55,6 @@ class ChatService {
         text: message,
       },
     });
-
-    // Fetch conversation history
-    const history =
-      await prisma.message.findMany({
-        where: {
-          conversationId,
-        },
-        orderBy: {
-          createdAt: "asc",
-        },
-      });
 
     let aiReply: string;
 
@@ -60,6 +78,9 @@ class ChatService {
         text: aiReply,
       },
     });
+
+    // Invalidate cache since a new message was added
+    await conversationCache.invalidateCache(conversationId);
 
     return {
       reply: aiReply,
