@@ -8,9 +8,9 @@ ShopAssist Ai is an AI-powered customer support platform, equipped with context-
 
 | Service | URL |
 | :--- | :--- |
-| **Frontend** | [https://spur-ai-chat-agent-rl09.onrender.com](https://spur-ai-chat-agent-rl09.onrender.com) |
-| **Backend API** | [https://spur-ai-chat-agent-rl09.onrender.com](https://spur-ai-chat-agent-rl09.onrender.com) |
-| **Health Endpoint** | [https://spur-ai-chat-agent-rl09.onrender.com/health](https://spur-ai-chat-agent-rl09.onrender.com/health) |
+| **Frontend** | [https://https://shopassist-ai-chat-web.vercel.app](https://shopassist-ai-chat-web.vercel.app)|
+| **Backend API** | [https://spur-ai-chat-agent-agcb.onrender.com](https://spur-ai-chat-agent-agcb.onrender.com) |
+| **Health Endpoint** | [https://spur-ai-chat-agent-agcb.onrender.com/health](https://spur-ai-chat-agent-agcb.onrender.com/health) |
 
 --- 
 
