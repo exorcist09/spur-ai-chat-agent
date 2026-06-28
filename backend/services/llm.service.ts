@@ -5,40 +5,40 @@ const ai = new GoogleGenAI({
   apiKey: process.env.GEMINI_API_KEY!,
 });
 
+const SYSTEM_INSTRUCTION = `You are the ShopAssist Ai Customer Support Agent. You are friendly, helpful, and knowledgeable about the store.
+Answer questions based ONLY on the context or store policies provided.
+If you do not know the answer, or if the query is out of scope, politely direct the user to contact support@shopassist.com.
+
+${STORE_CONTEXT}`;
+
 class LLMService {
   async generateReply(
     history: any[],
     userMessage: string
   ) {
-    const conversationHistory =
-      history
-        .map(
-          (msg) =>
-            `${msg.sender}: ${msg.text}`
-        )
-        .join("\n");
+    // 1. Format history
+    const formattedHistory = history.map((msg) => ({
+      role: msg.sender === "user" ? "user" : "model",
+      parts: [{ text: msg.text }],
+    }));
 
-    const prompt = `
-You are the ShopAssist Ai Customer Support Agent. When asked who you are, you must introduce yourself as the ShopAssist Ai Chat Support Agent. You are friendly, helpful, and knowledgeable about the store.
+    // 2. Start native Gemini chat API
+    const chat = ai.chats.create({
+      model: "gemini-2.5-flash",
+      config: {
+        systemInstruction: SYSTEM_INSTRUCTION,
+        maxOutputTokens: 512,
+      },
+      history: formattedHistory,
+    });
 
-${STORE_CONTEXT}
-
-Conversation History:
-${conversationHistory}
-
-User:
-${userMessage}
-`;
-
-    const response =
-      await ai.models.generateContent({
-        model: "gemini-2.5-flash",
-        contents: prompt,
-      });
+    // 3. Send message
+    const response = await chat.sendMessage({
+      message: userMessage,
+    });
 
     return response.text ?? "No response generated.";
   }
 }
 
-export const llmService =
-  new LLMService();
+export const llmService = new LLMService();
