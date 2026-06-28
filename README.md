@@ -1,4 +1,4 @@
-# ShopAssist Ai 
+# ShopAssist AI
 
 An AI-powered customer support chat application built for the **Spur Founding Full Stack Engineer** assignment. 
 
@@ -8,7 +8,7 @@ ShopAssist Ai is an AI-powered customer support platform, equipped with context-
 
 | Service | URL |
 | :--- | :--- |
-| **Frontend** | [https://https://shopassist-ai-chat-web.vercel.app](https://shopassist-ai-chat-web.vercel.app)|
+| **Frontend** | [https://shopassist-ai-chat-web.vercel.app](https://shopassist-ai-chat-web.vercel.app) |
 | **Backend API** | [https://spur-ai-chat-agent-agcb.onrender.com](https://spur-ai-chat-agent-agcb.onrender.com) |
 | **Health Endpoint** | [https://spur-ai-chat-agent-agcb.onrender.com/health](https://spur-ai-chat-agent-agcb.onrender.com/health) |
 
@@ -23,10 +23,10 @@ ShopAssist Ai is an AI-powered customer support platform, equipped with context-
 - **AI Customer Support:** Powered by Google's Gemini 2.5 Flash, strictly prompted to act as the ShopAssist Ai Customer Support Agent.
 - **Conversation Persistence:** All chats are durably saved to a Supabase PostgreSQL database via Prisma.
 - **Session Restoration:** Users can seamlessly return to past conversations and pick up exactly where they left off.
-- **Context-Aware Responses:** The LLM is fed previous chat history to provide highly accurate, contextual answers.
+- **Context-Aware Responses:** Previous conversation history is provided to the LLM, enabling coherent multi-turn conversations.
 - **Redis Conversation Cache:** Reduces repeated PostgreSQL queries by caching conversation history.
 - **Distributed Rate Limiting:** Protects the AI endpoint from abuse (30 requests per 15 minutes) using Redis, with an automatic in-memory fallback.
-- **Responsive UI:** A mobile-friendly interface with Dark Mode support built with Tailwind CSS v4.
+- **Responsive UI:** A mobile-friendly interface with Dark Mode support built with Tailwind CSS.
 - **Graceful Error Handling:** System gracefully degrades to PostgreSQL if Redis fails, and surfaces clean JSON errors to the frontend.
 - **Modular Backend Architecture:** Clean separation of concerns, Zod input validation, and secure CORS configurations.
 
@@ -134,7 +134,7 @@ The PostgreSQL database is managed via Prisma and utilizes a simple, highly-rela
 
 Upstash Redis was integrated to drastically reduce latency and protect the database from excessive queries.
 
-* **Why Redis?** Fetching conversation history is the most frequent operation in a chat app. Caching this in memory provides immense speed improvements.
+* **Why Redis?** Fetching conversation history is the most frequent operation in a chat application. Caching it in Redis significantly reduces repeated database queries and improves response latency.
 * **What is Cached:** The entire array of past messages for a specific `conversationId`.
 * **TTL (Time to Live):** Cached histories expire after 10 minutes (`REDIS_HISTORY_TTL=600`) to keep memory usage efficient.
 * **Invalidation:** The moment a new message is sent, the cache for that conversation is immediately destroyed.
@@ -144,7 +144,7 @@ Upstash Redis was integrated to drastically reduce latency and protect the datab
 
 ## Rate Limiting
 
-To prevent API abuse and control LLM costs, the `POST /chat/message` endpoint is heavily protected.
+To prevent API abuse and control LLM costs, the `POST /chat/message` endpoint is protected by distributed rate limiting..
 
 * **Limit:** 30 requests per 15 minutes per IP.
 * **Implementation:** Utilizes Redis `INCR` and `EXPIRE` counters.
@@ -218,7 +218,7 @@ Fetches the complete message history for a given conversation.
 
 ---
 
-## Local Development
+## How to Run Locally
 
 > **Note:** Ensure you have Bun installed (e.g., v1.1 or higher).
 
@@ -243,6 +243,7 @@ bun install
 | --- | --- |
 | `PORT` | The port the Express server will run on (e.g., 8000) |
 | `DATABASE_URL` | Your Supabase PostgreSQL connection string |
+| `DIRECT_URL` | Your Supabase Direct Connection URL (used for Prisma migrations) |
 | `GEMINI_API_KEY` | Your Google Gemini API Key |
 | `REDIS_URL` | *(Optional)* Upstash Redis URL (if omitted, Redis is skipped and falls back to PostgreSQL) |
 | `REDIS_TOKEN` | *(Optional)* Upstash Redis Token (if omitted, Redis is skipped and falls back to PostgreSQL) |
@@ -284,9 +285,29 @@ bun run dev
 
 ---
 
-## If I had more time
+## LLM Notes
 
-To remain focused on the core assignment constraints, the following conscious trade-offs were made:
+**Provider Used:** Google Gemini (`gemini-2.5-flash`) via the `@google/genai` SDK. Gemini was selected for its low latency, straightforward integration, and generous free tier, making it well suited for this assignment.
+
+### Prompting Strategy
+
+- Store policies and customer support instructions are provided through the model's native `systemInstruction`.
+- The complete conversation history for the active session is formatted and passed into `chats.create({ history })` to maintain multi-turn conversational context.
+- Responses are limited to **512 output tokens**, preventing excessively long responses while keeping latency and token usage predictable.
+- The model is instructed to remain focused on customer support queries and politely direct unsupported requests to `support@shopassist.com`.
+
+### Error Handling
+
+- **400** – Invalid request or input validation failure.
+- **429** – Rate limit exceeded.
+- **502–504** – Upstream AI service failures are handled gracefully and surfaced with appropriate HTTP status codes.
+- **500** – Unexpected server errors are caught by the global error middleware.
+
+---
+
+## Trade-offs & "If I had more time..."
+
+To remain focused on the core assignment constraints, the following conscious trade-offs were made, and if I had more time I would have implemented these:
 * **Authentication:** The application relies on local storage session tracking rather than full JWT/OAuth auth, as it wasn't strictly required.
 * **No Streaming Responses:** AI responses are currently buffered and sent as a single payload. Implementing SSE (Server-Sent Events) for streaming would improve UX but increase backend complexity.
 * **Single Tenant:** The system is designed for a single store's knowledge base.
@@ -298,7 +319,7 @@ To remain focused on the core assignment constraints, the following conscious tr
 
 ---
 
-## Assignment Checklist
+## Requirement  Checklist
 
 - [x] Chat UI matching modern standards
 - [x] LLM Integration (Gemini (selected for its speed and straightforward integration))
