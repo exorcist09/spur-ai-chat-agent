@@ -49,7 +49,7 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
         {/* Header */}
         <div className="h-16 flex items-center justify-between px-4 border-b border-slate-100 dark:border-slate-800 shrink-0">
           <div className="flex items-center gap-3">
-            <img src="/spurlogo.jpg" alt="ShopAssist Ai Logo" className="w-8 h-8 rounded-lg object-cover mix-blend-multiply dark:mix-blend-normal bg-white" />
+            <img src="/logo.jpg" alt="ShopAssist Ai Logo" className="w-8 h-8 rounded-lg object-cover mix-blend-multiply dark:mix-blend-normal bg-white" />
             <div className="flex flex-col">
               <span className="font-semibold text-lg text-slate-800 dark:text-slate-100 leading-tight">ShopAssist Ai</span>
               <span className="text-[10px] text-slate-500 dark:text-slate-400 uppercase tracking-widest leading-none">Support</span>

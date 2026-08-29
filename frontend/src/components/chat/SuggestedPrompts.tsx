@@ -32,7 +32,7 @@ export default function SuggestedPrompts({ onSelect }: SuggestedPromptsProps) {
     <div className="flex flex-col items-center justify-center h-full max-w-4xl mx-auto px-4 w-full">
       <div className="mb-8 text-center space-y-4">
         <div className="w-16 h-16 bg-blue-50 dark:bg-blue-900/20 rounded-2xl flex items-center justify-center mx-auto shadow-inner">
-          <img src="/spurlogo.jpg" alt="ShopAssist Ai" className="w-10 h-10 rounded-lg object-cover mix-blend-multiply dark:mix-blend-normal bg-white" />
+          <img src="/logo.jpg" alt="ShopAssist Ai" className="w-10 h-10 rounded-lg object-cover mix-blend-multiply dark:mix-blend-normal bg-white" />
         </div>
         <h2 className="text-xl font-semibold text-slate-800 dark:text-slate-100">
           How can ShopAssist Ai help you today?

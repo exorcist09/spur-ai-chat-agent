@@ -1,6 +1,6 @@
 import { redisClient } from "../config/redis";
 
-const PREFIX = "spur-ai:conversation:";
+const PREFIX = "shopassist-ai:conversation:";
 
 const getTTL = () => {
   return process.env.REDIS_HISTORY_TTL ? parseInt(process.env.REDIS_HISTORY_TTL, 10) : 600;

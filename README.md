@@ -1,22 +1,8 @@
 # ShopAssist AI
 
-An AI-powered customer support chat application built for the **Spur Founding Full Stack Engineer** assignment. 
-
 ShopAssist Ai is an AI-powered customer support platform, equipped with context-aware AI conversations, session management, robust PostgreSQL persistence, and distributed Redis caching and rate limiting.
 
-## Live Demo
 
-| Service | URL |
-| :--- | :--- |
-| **Frontend** | [https://shopassist-ai-chat-web.vercel.app](https://shopassist-ai-chat-web.vercel.app) |
-| **Backend API** | [https://spur-ai-chat-agent-agcb.onrender.com](https://spur-ai-chat-agent-agcb.onrender.com) |
-| **Health Endpoint** | [https://spur-ai-chat-agent-agcb.onrender.com/health](https://spur-ai-chat-agent-agcb.onrender.com/health) |
-
---- 
-
-> **Note:** The backend is deployed on Render's free tier. If the API hasn't been used in a while, it may take 30–50 seconds to spin up on the first request (cold start).
-
----
 
 ## Features
 
@@ -217,64 +203,6 @@ Fetches the complete message history for a given conversation.
 * **No Secrets Committed:** All API keys are loaded strictly via `.env`.
 
 ---
-
-## How to Run Locally
-
-> **Note:** Ensure you have Bun installed (e.g., v1.1 or higher).
-
-### 1. Clone & Install
-```bash
-git clone https://github.com/exorcist09/spur-ai-chat-agent.git
-cd spur-ai-chat-agent
-
-# Install backend dependencies
-cd backend
-bun install
-
-# Install frontend dependencies
-cd frontend
-bun install
-```
-
-### 2. Environment Variables
-
-**Backend (`backend/.env`):**
-| Variable | Description |
-| --- | --- |
-| `PORT` | The port the Express server will run on (e.g., 8000) |
-| `DATABASE_URL` | Your Supabase PostgreSQL connection string |
-| `DIRECT_URL` | Your Supabase Direct Connection URL (used for Prisma migrations) |
-| `GEMINI_API_KEY` | Your Google Gemini API Key |
-| `REDIS_URL` | *(Optional)* Upstash Redis URL (if omitted, Redis is skipped and falls back to PostgreSQL) |
-| `REDIS_TOKEN` | *(Optional)* Upstash Redis Token (if omitted, Redis is skipped and falls back to PostgreSQL) |
-| `FRONTEND_URL` | Allowed CORS origin (e.g., `http://localhost:3000`) |
-
-**Frontend (`frontend/.env`):**
-| Variable | Description |
-| --- | --- |
-| `NEXT_PUBLIC_API_URL` | URL to your backend (e.g., `http://localhost:8000`) |
-
-### 3. Database Migration
-Navigate to the backend and push the schema to your PostgreSQL instance:
-```bash
-cd backend
-bunx prisma migrate dev
-```
-
-### 4. Run the Stack
-Start both servers in separate terminal windows in local:
-```bash
-# Terminal 1 (Backend)
-cd backend
-bun run dev
-
-# Terminal 2 (Frontend)
-cd frontend
-bun run dev
-```
-
----
-
 ## Design Decisions
 
 * **Next.js (App Router):** Chosen for optimal React server-side rendering, routing capabilities, and overall ecosystem maturity.

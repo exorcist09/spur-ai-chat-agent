@@ -1,5 +1,5 @@
 {
-  "name": "spur-ai-agent-backend",
+  "name": "shopassist-ai",
   "private": true,
   "scripts": {
     "dev": "bun --watch server.ts",

@@ -19,7 +19,7 @@ setInterval(() => {
 export const rateLimiter = async (req: Request, res: Response, next: NextFunction) => {
   // Use IP as identifier. In production behind a proxy, you'd use req.ip or x-forwarded-for.
   const ip = req.ip || req.socket.remoteAddress || "unknown_ip";
-  const key = `spur-ai:ratelimit:${ip}`;
+  const key = `shopassist-ai:ratelimit:${ip}`;
 
   const sendRateLimitResponse = (res: Response) => {
     res.setHeader("Retry-After", WINDOW_IN_SECONDS.toString());
